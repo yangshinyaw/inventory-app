@@ -13,7 +13,19 @@ const {
 const { protect, authorize } = require('../middleware/auth');
 
 // Protected routes
-router.route('/')
+router.route('/:id')
+  .get(protect, getItemById)
+  .put(protect, authorize('admin', 'manager'), updateItem)
+  .delete(protect, authorize('admin'), deleteItem);
+
+// Transaction routes
+router.route('/:id/transaction')
+  .post(protect, addTransaction);
+
+router.route('/:id/transactions')
+  .get(protect, getItemTransactions);
+
+module.exports = router;('/')
   .post(protect, authorize('admin', 'manager'), createItem)
   .get(protect, getItems);
 
